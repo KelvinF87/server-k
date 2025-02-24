@@ -20,7 +20,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 function escribeFile(user) {
-    fs.writeFileSync('./users.json', JSON.stringify(user), 'utf-8');
+    fs.writeFileSync('./data/users.json', JSON.stringify(user), 'utf-8');
 
     
 }
