@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación de la API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .container { max-width: 900px; margin: auto; }
+        h1, h2 { color: #333; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+        .section { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        .header { background: #007bff; color: white; text-align: center; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Documentación de la API</h1>
+        </div>
+        
+        <div class="section">
+            <h2>Auth Routes</h2>
+            <h3>Sign Up</h3>
+            <pre><code>POST http://localhost:5005/auth/signup
+Content-Type: application/json
+
+{
+  "username": "new_user",
+  "email": "new_user@example.com",
+  "password": "password123",
+  "name": "Name",
+  "lastname": "Lastname",
+  "roles": ["user"],
+  "active": true,
+  "image": "url_to_image"
+}</code></pre>
+            <h3>Login</h3>
+            <pre><code>POST http://localhost:5005/auth/login
+Content-Type: application/json
+
+{
+  "username": "new_user",
+  "password": "password123"
+}</code></pre>
+            <h3>Verify Token</h3>
+            <pre><code>GET http://localhost:5005/auth/verify
+Authorization: Bearer &lt;tu_token_jwt&gt;</code></pre>
+        </div>
+        
+        <div class="section">
+            <h2>Gasto Routes</h2>
+            <h3>Create a New Gasto</h3>
+            <pre><code>POST http://localhost:5005/api/gastos
+Content-Type: application/json
+Authorization: Bearer &lt;tu_token_jwt&gt;
+
+{
+  "gasto": 100,
+  "tipo": "60b8d28e73c68e2a781a4b61",
+  "detalles": "Compra de comida",
+  "balance": 50
+}</code></pre>
+            <h3>Get All Gastos</h3>
+            <pre><code>GET http://localhost:5005/api/gastos
+Authorization: Bearer &lt;tu_token_jwt&gt;</code></pre>
+            <h3>Get a Gasto by ID</h3>
+            <pre><code>GET http://localhost:5005/api/gastos/:id
+Authorization: Bearer &lt;tu_token_jwt&gt;</code></pre>
+            <h3>Update a Gasto</h3>
+            <pre><code>PUT http://localhost:5005/api/gastos/:id
+Content-Type: application/json
+Authorization: Bearer &lt;tu_token_jwt&gt;
+
+{
+  "gasto": 150,
+  "detalles": "Compra de comida actualizada"
+}</code></pre>
+            <h3>Delete a Gasto</h3>
+            <pre><code>DELETE http://localhost:5005/api/gastos/:id
+Authorization: Bearer &lt;tu_token_jwt&gt;</code></pre>
+        </div>
+        
+        <div class="section">
+            <h2>Ingreso Routes</h2>
+            <h3>Create a New Ingreso</h3>
+            <pre><code>POST http://localhost:5005/api/ingresos
+Content-Type: application/json
+Authorization: Bearer &lt;tu_token_jwt&gt;
+
+{
+  "ingreso": 200,
+  "tipo": "60b8d28e73c68e2a781a4b62",
+  "detalles": "Salario mensual",
+  "balance": 100
+}</code></pre>
+            <h3>Get All Ingresos</h3>
+            <pre><code>GET http://localhost:5005/api/ingresos
+Authorization: Bearer &lt;tu_token_jwt&gt;</code></pre>
+            <h3>Get an Ingreso by ID</h3>
+            <pre><code>GET http://localhost:5005/api/ingresos/:id
+Authorization: Bearer &lt;tu_token_jwt&gt;</code></pre>
+            <h3>Update an Ingreso</h3>
+            <pre><code>PUT http://localhost:5005/api/ingresos/:id
+Content-Type: application/json
+Authorization: Bearer &lt;tu_token_jwt&gt;
+
+{
+  "ingreso": 250,
+  "detalles": "Salario mensual actualizado"
+}</code></pre>
+            <h3>Delete an Ingreso</h3>
+            <pre><code>DELETE http://localhost:5005/api/ingresos/:id
+Authorization: Bearer &lt;tu_token_jwt&gt;</code></pre>
+        </div>
+        
+        <div class="section">
+            <h2>User Routes</h2>
+            <h3>Get User by ID</h3>
+            <pre><code>GET http://localhost:5005/api/users/:id
+Authorization: Bearer &lt;tu_token_jwt&gt;</code></pre>
+        </div>
+        
+        <div class="section">
+            <h2>Resumen de Endpoints</h2>
+            <ul>
+                <li><strong>POST</strong> /auth/signup - Registro de usuario</li>
+                <li><strong>POST</strong> /auth/login - Inicio de sesión</li>
+                <li><strong>GET</strong> /auth/verify - Verificación de token</li>
+                <li><strong>POST</strong> /api/gastos - Crear un gasto</li>
+                <li><strong>GET</strong> /api/gastos - Obtener todos los gastos</li>
+                <li><strong>GET</strong> /api/gastos/:id - Obtener un gasto por ID</li>
+                <li><strong>PUT</strong> /api/gastos/:id - Actualizar un gasto</li>
+                <li><strong>DELETE</strong> /api/gastos/:id - Eliminar un gasto</li>
+                <li><strong>POST</strong> /api/ingresos - Crear un ingreso</li>
+                <li><strong>GET</strong> /api/ingresos - Obtener todos los ingresos</li>
+                <li><strong>GET</strong> /api/ingresos/:id - Obtener un ingreso por ID</li>
+                <li><strong>PUT</strong> /api/ingresos/:id - Actualizar un ingreso</li>
+                <li><strong>DELETE</strong> /api/ingresos/:id - Eliminar un ingreso</li>
+                <li><strong>GET</strong> /api/users/:id - Obtener usuario por ID</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

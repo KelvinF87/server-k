@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Documentation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    pre {
+      background-color: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Introduction -->
+  <div class="section">
+    <h1>Application Documentation</h1>
+    <p>This document provides a detailed overview of the application's models, routes, middleware, and server configuration.</p>
+  </div>
+
+  <!-- Models -->
+  <div class="section">
+    <h2>Models</h2>
+    <h3>Gasto Model</h3>
+    <pre><code>const GastoSchema = new Schema({
+      gasto: { type: Number, required: true, min: 0 },
+      tipo: { type: mongoose.Schema.Types.ObjectId, ref: "TipoEntrada", required: true },
+      balance: { type: Number, default: 0 },
+      detalles: { type: String, required: true },
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+      created: { type: Date, default: Date.now }
+    });</code></pre>
+
+    <h3>Ingreso Model</h3>
+    <pre><code>const IngresoSchema = new Schema({
+      ingreso: { type: Number, required: true, min: 0 },
+      tipo: { type: mongoose.Schema.Types.ObjectId, ref: "TipoEntrada", required: true },
+      balance: { type: Number, default: 0 },
+      detalles: { type: String, required: true },
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+      created: { type: Date, default: Date.now }
+    });</code></pre>
+
+    <h3>TipoEntrada Model</h3>
+    <pre><code>const TipoEntradaSchema = new Schema({
+      name: { type: String, required: true, unique: true },
+      tipo: { type: [String], required: true, default: ["ingreso", "Gasto"] },
+      created: { type: Date, default: Date.now }
+    });</code></pre>
+
+    <h3>User Model</h3>
+    <pre><code>const UserSchema = new Schema({
+      name: { type: String, required: true },
+      lastname: { type: String, required: true },
+      username: { type: String, required: true, unique: true },
+      password: { type: String, required: true },
+      email: { type: String, required: true, unique: true },
+      roles: { type: [String], default: ["user"], required: true },
+      active: { type: Boolean, default: true },
+      image: { type: String, default: "default-avatar-url" },
+      created: { type: Date, default: Date.now }
+    });</code></pre>
+  </div>
+
+  <!-- Routes -->
+  <div class="section">
+    <h2>Routes</h2>
+    <h3>Authentication Routes</h3>
+    <ul>
+      <li><code>POST /auth/signup</code>: Create a new user.</li>
+      <li><code>POST /auth/login</code>: Authenticate a user and return a JWT token.</li>
+      <li><code>GET /auth/verify</code>: Verify the JWT token.</li>
+    </ul>
+
+    <h3>Gasto Routes</h3>
+    <ul>
+      <li><code>POST /api/gastos</code>: Create a new Gasto.</li>
+      <li><code>GET /api/gastos</code>: Get all Gastos for the authenticated user or admin.</li>
+      <li><code>GET /api/gastos/:id</code>: Get a single Gasto by ID.</li>
+      <li><code>PUT /api/gastos/:id</code>: Update a Gasto by ID.</li>
+      <li><code>DELETE /api/gastos/:id</code>: Delete a Gasto by ID.</li>
+    </ul>
+
+    <h3>Ingreso Routes</h3>
+    <ul>
+      <li><code>POST /api/ingresos</code>: Create a new Ingreso.</li>
+      <li><code>GET /api/ingresos</code>: Get all Ingresos for the authenticated user or admin.</li>
+      <li><code>GET /api/ingresos/:id</code>: Get a single Ingreso by ID.</li>
+      <li><code>PUT /api/ingresos/:id</code>: Update an Ingreso by ID.</li>
+      <li><code>DELETE /api/ingresos/:id</code>: Delete an Ingreso by ID.</li>
+    </ul>
+
+    <h3>TipoEntrada Routes</h3>
+    <ul>
+      <li><code>POST /api/tipo-entradas</code>: Create a new TipoEntrada.</li>
+      <li><code>GET /api/tipo-entradas</code>: Get all TipoEntradas.</li>
+      <li><code>GET /api/tipo-entradas/:id</code>: Get a single TipoEntrada by ID.</li>
+      <li><code>PUT /api/tipo-entradas/:id</code>: Update a TipoEntrada by ID.</li>
+      <li><code>DELETE /api/tipo-entradas/:id</code>: Delete a TipoEntrada by ID.</li>
+    </ul>
+
+    <h3>User Routes</h3>
+    <ul>
+      <li><code>GET /api/users/:id</code>: Get user details by ID.</li>
+    </ul>
+  </div>
+
+  <!-- Middleware -->
+  <div class="section">
+    <h2>Middleware</h2>
+    <p>The application uses middleware for authentication and role-based authorization:</p>
+    <ul>
+      <li><code>isAuthenticated</code>: Verifies the JWT token.</li>
+      <li><code>authorizeRoles</code>: Restricts access based on user roles.</li>
+    </ul>
+  </div>
+
+  <!-- Server Configuration -->
+  <div class="section">
+    <h2>Server Configuration</h2>
+    <p>The server is configured using Express.js and connects to a MongoDB database.</p>
+    <pre><code>mongoose.connect(process.env.MONGO_URI);</code></pre>
+    <p>Middlewares include:</p>
+    <ul>
+      <li><code>cors</code>: Handles cross-origin requests.</li>
+      <li><code>express.json()</code>: Parses incoming JSON data.</li>
+      <li><code>morgan("dev")</code>: Logs HTTP requests.</li>
+    </ul>
+  </div>
+
+  <!-- Error Handling -->
+  <div class="section">
+    <h2>Error Handling</h2>
+    <p>Common error responses:</p>
+    <ul>
+      <li><code>400 Bad Request</code>: Invalid input or missing fields.</li>
+      <li><code>401 Unauthorized</code>: Authentication failed.</li>
+      <li><code>403 Forbidden</code>: Insufficient permissions.</li>
+      <li><code>404 Not Found</code>: Resource not found.</li>
+      <li><code>500 Internal Server Error</code>: Unexpected server error.</li>
+    </ul>
+  </div>
+
+  <!-- Conclusion -->
+  <div class="section">
+    <h2>Conclusion</h2>
+    <p>This documentation covers all aspects of the application, including models, routes, middleware, and server configuration. For further assistance, refer to the source code.</p>
+  </div>
+
+</body>
+</html>
