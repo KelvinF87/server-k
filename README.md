@@ -6,8 +6,7 @@ Este proyecto es una aplicación de backend en Node.js con Express y MongoDB par
 
 1. Clonar el repositorio:
    ```sh
-   git clone https://github.com/tu-repo.git
-   cd tu-repo
+   git clone https://github.com/KelvinF87/server-k.git
    ```
 2. Instalar dependencias:
    ```sh
@@ -133,3 +132,6 @@ Si deseas contribuir, haz un fork del repositorio, crea una rama con tus cambios
 
 ## Licencia
 Este proyecto está bajo la licencia MIT.
+
+## Autor
+Kelvin Jose Familia Adames
