@@ -7,7 +7,7 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 const authRouter = express.Router();
 const saltRounds = 10;
 
-authRouter.post("/signup", (req, res) => {
+authRouter.post("/signup", async (req, res) => { // Use async/await
   const { username, email, password, name, lastname, roles, active, image } = req.body;
 
   if (!email || !password || !name || !lastname || !roles) {
@@ -19,46 +19,46 @@ authRouter.post("/signup", (req, res) => {
     return res.status(400).json({ message: 'Provide a valid email address.' });
   }
 
-  bcrypt.hash(password, saltRounds)
-    .then(hashedPassword => {
-      return User.create({ username, email, password: hashedPassword, name, lastname, roles, active, image });
-    })
-    .then(createdUser => {
-      res.status(201).json(createdUser);
-    })
-    .catch(err => {
-      console.error("Error while creating the user", err);
-      res.status(500).json({ message: "Error while creating the user" });
-    });
+  try {
+    const hashedPassword = await bcrypt.hash(password, saltRounds); // Await the hash
+    const createdUser = await User.create({ username, email, password: hashedPassword, name, lastname, roles, active, image });
+    res.status(201).json(createdUser);
+  } catch (err) {
+    console.error("Error while creating the user", err);
+    if (err.code === 11000) { // MongoDB duplicate key error
+      return res.status(400).json({ message: "Username or email already exists" });
+    }
+    res.status(500).json({ message: "Error while creating the user" });
+  }
 });
 
-authRouter.post('/login', (req, res) => {
+authRouter.post('/login', async (req, res) => {  // Use async/await
   const { username, password } = req.body;
 
   if (!username || !password) {
     return res.status(400).json({ message: "Provide username and password." });
   }
 
-  User.findOne({ username })
-    .then(foundUser => {
-      if (!foundUser) {
-        return res.status(401).json({ message: "User not found." });
-      }
+  try {
+    const foundUser = await User.findOne({ username });
 
-      bcrypt.compare(password, foundUser.password)
-        .then(passwordCorrect => {
-          if (passwordCorrect) {
-            const payload = { _id: foundUser._id, username: foundUser.username, name: foundUser.name };
-            const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, { algorithm: 'HS256', expiresIn: "6h" });
-            res.status(200).json({ authToken });
-          } else {
-            res.status(401).json({ message: "Unable to authenticate the user" });
-          }
-        });
-    })
-    .catch(err => {
-      res.status(500).json({ message: "Internal Server Error" });
-    });
+    if (!foundUser) {
+      return res.status(401).json({ message: "User not found." });
+    }
+
+    const passwordCorrect = await bcrypt.compare(password, foundUser.password);
+
+    if (passwordCorrect) {
+      const payload = { _id: foundUser._id, username: foundUser.username, name: foundUser.name, roles: foundUser.roles }; // Include roles in payload
+      const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, { algorithm: 'HS256', expiresIn: "6h" });
+      res.status(200).json({ authToken });
+    } else {
+      res.status(401).json({ message: "Unable to authenticate the user" });
+    }
+  } catch (err) {
+    console.error("Login Error:", err);  // Log the error
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 authRouter.get("/verify", isAuthenticated, (req, res) => {
