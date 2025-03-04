@@ -1,7 +1,6 @@
-
-// models/Ingreso.model.js
+// @filename: models/Ingreso.model.js
 const mongoose = require("mongoose");
-const { Schema } = mongoose; // Destructure Schema
+const { Schema } = mongoose;
 
 const IngresoSchema = new Schema({
   ingreso: { type: Number, required: true, min: 0 },
@@ -9,8 +8,8 @@ const IngresoSchema = new Schema({
   balance: { type: Number, default: 0 },
   detalles: { type: String, required: true },
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  created: { type: Date, default: Date.now }
-}, { timestamps: true }); // Add timestamps
+  deleted: { type: Boolean, default: false },
+}, { timestamps: true });
 
 const Ingreso = mongoose.model("Ingreso", IngresoSchema);
 module.exports = Ingreso;
