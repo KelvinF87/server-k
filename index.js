@@ -18,15 +18,18 @@ const { isAuthenticated } = require("./middleware/jwt.middleware");
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.log("Error connecting to MongoDB", err));
-
+  .catch((err) => {
+    console.error("Error connecting to MongoDB", err);
+    process.exit(1); // Salir del proceso si no se puede conectar
+  });
 // INITIALIZE EXPRESS APP
 const app = express();
 
-// MIDDLEWARE
+// Divide la cadena en un arreglo
+const allowedOrigins = process.env.CORS_URI.split(',').map(origin => origin.trim());
 app.use(cors({
-  origin: [process.env.CORS_URI],
-  credentials: true // Important for cookies in CORS
+  origin: allowedOrigins,
+  credentials: true // Importante para cookies en CORS
 }));
 app.use(express.json());
 app.use(morgan("dev"));
