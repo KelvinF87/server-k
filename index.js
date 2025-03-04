@@ -12,6 +12,7 @@ const authRouter = require("./routes/auth.routes");
 const gastoRouter = require("./routes/gasto.routes");
 const ingresoRouter = require("./routes/ingreso.routes");
 const tipoEntradaRouter = require("./routes/tipoEntrada.routes");
+const reportRouter = require("./routes/report.routes");
 const { isAuthenticated } = require("./middleware/jwt.middleware");
 
 // Create mongoose connection with DB
@@ -42,6 +43,7 @@ app.use("/auth", authRouter);
 app.use("/api/gastos", gastoRouter);
 app.use("/api/ingresos", ingresoRouter);
 app.use("/api/tipo-entradas", tipoEntradaRouter);
+app.use("/api/reports", reportRouter);
 
 // Error handling middleware (Centralized)
 app.use((err, req, res, next) => {

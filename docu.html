@@ -1,108 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SERVER-K API Documentation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        h1, h2, h3 {
-            color: #444;
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
-        p {
-            margin-bottom: 15px;
-        }
-        code {
-            background-color: #eee;
-            padding: 2px 5px;
-            border-radius: 4px;
-            font-family: monospace;
-        }
-        pre {
-            background-color: #eee;
-            padding: 10px;
-            border-radius: 4px;
-            overflow-x: auto;
-            font-family: monospace;
-        }
-        .endpoint {
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 4px;
-        }
-        .method {
-            font-weight: bold;
-            color: #fff;
-            background-color: #337ab7;
-            padding: 5px 10px;
-            border-radius: 4px;
-            margin-right: 10px;
-        }
-        .description {
-            margin-top: 10px;
-            font-style: italic;
-        }
-        .example {
-            margin-top: 10px;
-        }
-        .parameter-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        .parameter-table th, .parameter-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        .parameter-table th {
-            background-color: #f0f0f0;
-        }
-        .required {
-            color: red;
-        }
-
-    </style>
+  <title>SERVER-K API Documentation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    h2 {
+      margin-top: 30px;
+    }
+    h3 {
+      margin-top: 20px;
+    }
+    p {
+      line-height: 1.6;
+    }
+    code {
+      background-color: #f4f4f4;
+      border: 1px solid #ddd;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background-color: #f4f4f4;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 4px;
+      overflow: auto;
+      font-family: monospace;
+    }
+    strong {
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
-    <h1>SERVER-K API Documentation</h1>
+  <h1>SERVER-K API Documentation</h1>
+  <p>Welcome to the SERVER-K API documentation. This document provides information on how to use the API endpoints for managing users, authentication, expenses, income, and entry types. All API requests require a valid JWT token in the <code>Authorization</code> header (<code>Bearer JWT_TOKEN</code>) except for the authentication endpoints.</p>
 
-    <p>Welcome to the SERVER-K API documentation. This document provides information on how to use the API endpoints for managing users, authentication, expenses, income, and entry types.  All API requests require a valid JWT token in the <code>Authorization</code> header (<code>Bearer <token></code>) except for the authentication endpoints.</p>
+  <h2>Authentication Endpoints (/auth)</h2>
 
-    <h2>Authentication Endpoints (/auth)</h2>
-
-    <div class="endpoint">
-        <span class="method">POST</span> <code>/auth/signup</code>
-        <p class="description">Registers a new user.</p>
-        <h3>Request Body:</h3>
-        <pre>
-<code>
+  <h3>POST /auth/signup</h3>
+  <p>Registers a new user.</p>
+  <p><strong>Request Body:</strong></p>
+  <pre>
+    <code>
 {
-  "username": "newuser", <span class="required">required</span>,
-  "email": "newuser@example.com", <span class="required">required</span>,
-  "password": "securePassword", <span class="required">required</span>,
-  "name": "John", <span class="required">required</span>,
-  "lastname": "Doe", <span class="required">required</span>,
-  "roles": ["user"], <span class="required">required</span>,
+  "username": "newuser", <strong>required</strong>,
+  "email": "newuser@example.com", <strong>required</strong>,
+  "password": "securePassword", <strong>required</strong>,
+  "name": "John", <strong>required</strong>,
+  "lastname": "Doe", <strong>required</strong>,
+  "roles": ["user"], <strong>required</strong>,
   "active": true,
   "image": "URL_to_image"
 }
-</code>
-        </pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "_id": "...",
   "username": "newuser",
@@ -115,40 +78,40 @@
   "createdAt": "...",
   "updatedAt": "..."
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-    <div class="endpoint">
-        <span class="method">POST</span> <code>/auth/login</code>
-        <p class="description">Authenticates a user and returns a JWT token.</p>
-        <h3>Request Body:</h3>
-        <pre>
-<code>
+  <h3>POST /auth/login</h3>
+  <p>Authenticates a user and returns a JWT token.</p>
+  <p><strong>Request Body:</strong></p>
+  <pre>
+    <code>
 {
-  "username": "existinguser", <span class="required">required</span>,
-  "password": "password" <span class="required">required</span>
+  "username": "existinguser", <strong>required</strong>,
+  "password": "password", <strong>required</strong>
 }
-</code>
-        </pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "authToken": "JWT_TOKEN"
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-    <div class="endpoint">
-        <span class="method">GET</span> <code>/auth/verify</code>
-        <p class="description">Verifies a JWT token and returns the payload. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+  <h3>GET /auth/verify</h3>
+  <p>Verifies a JWT token and returns the payload. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "_id": "...",
   "username": "existinguser",
@@ -157,20 +120,22 @@
   "iat": "...",
   "exp": "..."
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-    <h2>User Endpoints (/api/users)</h2>
+  <h2>User Endpoints (/api/users)</h2>
 
-    <div class="endpoint">
-        <span class="method">GET</span> <code>/api/users/:id</code>
-        <p class="description">Retrieves user information by ID. Requires a valid JWT token and the user ID must match the token's user ID.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+  <h3>GET /api/users/:id</h3>
+  <p>Retrieves user information by ID. Requires a valid JWT token and the user ID must match the token's user ID.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "_id": "...",
   "username": "user1",
@@ -183,30 +148,32 @@
   "createdAt": "...",
   "updatedAt": "..."
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-    <h2>Expense Endpoints (/api/gastos)</h2>
+  <h2>Expense Endpoints (/api/gastos)</h2>
 
-    <div class="endpoint">
-        <span class="method">POST</span> <code>/api/gastos</code>
-        <p class="description">Creates a new expense. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Request Body:</h3>
-        <pre>
-<code>
+  <h3>POST /api/gastos</h3>
+  <p>Creates a new expense. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Request Body:</strong></p>
+  <pre>
+    <code>
 {
-  "gasto": 100, <span class="required">required</span>,
-  "tipo": "tipoEntradaId", <span class="required">required</span>,
-  "detalles": "Lunch with client" <span class="required">required</span>
+  "gasto": 100, <strong>required</strong>,
+  "tipo": "tipoEntradaId", <strong>required</strong>,
+  "detalles": "Lunch with client", <strong>required</strong>
 }
-</code>
-        </pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "_id": "...",
   "gasto": 100,
@@ -217,18 +184,20 @@
   "createdAt": "...",
   "updatedAt": "..."
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-    <div class="endpoint">
-        <span class="method">GET</span> <code>/api/gastos</code>
-        <p class="description">Retrieves all expenses for the authenticated user (or all expenses if the user has the "admin" role). Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+  <h3>GET /api/gastos</h3>
+  <p>Retrieves all expenses for the authenticated user (or all expenses if the user has the "admin" role). Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 [
   {
     "_id": "...",
@@ -242,18 +211,20 @@
   },
   ...
 ]
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-     <div class="endpoint">
-        <span class="method">GET</span> <code>/api/gastos/:id</code>
-        <p class="description">Retrieves a specific expense by ID. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+  <h3>GET /api/gastos/:id</h3>
+  <p>Retrieves a specific expense by ID. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "_id": "...",
   "gasto": 100,
@@ -264,27 +235,29 @@
   "createdAt": "...",
   "updatedAt": "..."
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-        <div class="endpoint">
-        <span class="method">PUT</span> <code>/api/gastos/:id</code>
-        <p class="description">Updates a specific expense by ID. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Request Body:</h3>
-        <pre>
-<code>
+  <h3>PUT /api/gastos/:id</h3>
+  <p>Updates a specific expense by ID. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Request Body:</strong></p>
+  <pre>
+    <code>
 {
   "gasto": 120,
   "detalles": "Updated lunch details"
 }
-</code>
-        </pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "_id": "...",
   "gasto": 120,
@@ -295,39 +268,47 @@
   "createdAt": "...",
   "updatedAt": "..."
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-    <div class="endpoint">
-        <span class="method">DELETE</span> <code>/api/gastos/:id</code>
-        <p class="description">Deletes a specific expense by ID. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Response:</h3>
-        <p>204 No Content (on success)</p>
-    </div>
+  <h3>DELETE /api/gastos/:id</h3>
+  <p>Deletes a specific expense by ID. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
+204 No Content (on success)
+    </code>
+  </pre>
 
-    <h2>Income Endpoints (/api/ingresos)</h2>
+  <h2>Income Endpoints (/api/ingresos)</h2>
 
-       <div class="endpoint">
-        <span class="method">POST</span> <code>/api/ingresos</code>
-        <p class="description">Creates a new income. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Request Body:</h3>
-        <pre>
-<code>
+  <h3>POST /api/ingresos</h3>
+  <p>Creates a new income. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Request Body:</strong></p>
+  <pre>
+    <code>
 {
-  "ingreso": 1000, <span class="required">required</span>,
-  "tipo": "tipoEntradaId", <span class="required">required</span>,
-  "detalles": "Salary" <span class="required">required</span>
+  "ingreso": 1000, <strong>required</strong>,
+  "tipo": "tipoEntradaId", <strong>required</strong>,
+  "detalles": "Salary", <strong>required</strong>
 }
-</code>
-        </pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "_id": "...",
   "ingreso": 1000,
@@ -338,18 +319,20 @@
   "createdAt": "...",
   "updatedAt": "..."
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-    <div class="endpoint">
-        <span class="method">GET</span> <code>/api/ingresos</code>
-        <p class="description">Retrieves all incomes for the authenticated user (or all incomes if the user has the "admin" role). Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+  <h3>GET /api/ingresos</h3>
+  <p>Retrieves all incomes for the authenticated user (or all incomes if the user has the "admin" role). Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 [
   {
     "_id": "...",
@@ -363,18 +346,20 @@
   },
   ...
 ]
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-     <div class="endpoint">
-        <span class="method">GET</span> <code>/api/ingresos/:id</code>
-        <p class="description">Retrieves a specific income by ID. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+  <h3>GET /api/ingresos/:id</h3>
+  <p>Retrieves a specific income by ID. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "_id": "...",
   "ingreso": 1000,
@@ -385,27 +370,29 @@
   "createdAt": "...",
   "updatedAt": "..."
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-        <div class="endpoint">
-        <span class="method">PUT</span> <code>/api/ingresos/:id</code>
-        <p class="description">Updates a specific income by ID. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Request Body:</h3>
-        <pre>
-<code>
+  <h3>PUT /api/ingresos/:id</h3>
+  <p>Updates a specific income by ID. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Request Body:</strong></p>
+  <pre>
+    <code>
 {
   "ingreso": 1200,
   "detalles": "Updated salary details"
 }
-</code>
-        </pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "_id": "...",
   "ingreso": 1200,
@@ -416,38 +403,46 @@
   "createdAt": "...",
   "updatedAt": "..."
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-    <div class="endpoint">
-        <span class="method">DELETE</span> <code>/api/ingresos/:id</code>
-        <p class="description">Deletes a specific income by ID. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Response:</h3>
-        <p>204 No Content (on success)</p>
-    </div>
+  <h3>DELETE /api/ingresos/:id</h3>
+  <p>Deletes a specific income by ID. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
+204 No Content (on success)
+    </code>
+  </pre>
 
-    <h2>Entry Type Endpoints (/api/tipo-entradas)</h2>
+  <h2>Entry Type Endpoints (/api/tipo-entradas)</h2>
 
-    <div class="endpoint">
-        <span class="method">POST</span> <code>/api/tipo-entradas</code>
-        <p class="description">Creates a new entry type. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Request Body:</h3>
-        <pre>
-<code>
+  <h3>POST /api/tipo-entradas</h3>
+  <p>Creates a new entry type. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Request Body:</strong></p>
+  <pre>
+    <code>
 {
-  "name": "Food", <span class="required">required</span>,
-  "tipo": ["Gasto"] <span class="required">required</span>
+  "name": "Food", <strong>required</strong>,
+  "tipo": ["Gasto"], <strong>required</strong>
 }
-</code>
-        </pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "_id": "...",
   "name": "Food",
@@ -455,18 +450,20 @@
   "createdAt": "...",
   "updatedAt": "..."
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-    <div class="endpoint">
-        <span class="method">GET</span> <code>/api/tipo-entradas</code>
-        <p class="description">Retrieves all entry types. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+  <h3>GET /api/tipo-entradas</h3>
+  <p>Retrieves all entry types. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 [
   {
     "_id": "...",
@@ -477,18 +474,20 @@
   },
   ...
 ]
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-    <div class="endpoint">
-        <span class="method">GET</span> <code>/api/tipo-entradas/:id</code>
-        <p class="description">Retrieves a specific entry type by ID. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+  <h3>GET /api/tipo-entradas/:id</h3>
+  <p>Retrieves a specific entry type by ID. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "_id": "...",
   "name": "Food",
@@ -496,27 +495,29 @@
   "createdAt": "...",
   "updatedAt": "..."
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-    <div class="endpoint">
-        <span class="method">PUT</span> <code>/api/tipo-entradas/:id</code>
-        <p class="description">Updates a specific entry type by ID. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Request Body:</h3>
-        <pre>
-<code>
+  <h3>PUT /api/tipo-entradas/:id</h3>
+  <p>Updates a specific entry type by ID. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Request Body:</strong></p>
+  <pre>
+    <code>
 {
   "name": "Updated Food",
   "tipo": ["Gasto"]
 }
-</code>
-        </pre>
-        <h3>Response:</h3>
-        <pre>
-<code>
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
 {
   "_id": "...",
   "name": "Updated Food",
@@ -524,20 +525,102 @@
   "createdAt": "...",
   "updatedAt": "..."
 }
-</code>
-        </pre>
-    </div>
+    </code>
+  </pre>
 
-    <div class="endpoint">
-        <span class="method">DELETE</span> <code>/api/tipo-entradas/:id</code>
-        <p class="description">Deletes a specific entry type by ID. Requires a valid JWT token.</p>
-        <h3>Headers:</h3>
-        <pre><code>Authorization: Bearer JWT_TOKEN</code></pre>
-        <h3>Response:</h3>
-        <p>204 No Content (on success)</p>
-    </div>
+  <h3>DELETE /api/tipo-entradas/:id</h3>
+  <p>Deletes a specific entry type by ID. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
+204 No Content (on success)
+    </code>
+  </pre>
 
-    <p>This documentation provides a general overview of the API endpoints.  For more specific details, please consult the API source code.</p>
+  <h2>Report Endpoints (/api/reports)</h2>
+
+  <h3>GET /api/reports/balance</h3>
+  <p>Retrieves the user's current balance (total income - total expenses). Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
+{
+  "balance": 5000
+}
+    </code>
+  </pre>
+
+  <h3>GET /api/reports/expenses-by-date</h3>
+  <p>Retrieves expenses grouped by date for the authenticated user. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Query Parameters:</strong></p>
+  <ul>
+    <li><code>startDate</code> (optional): Start date for the report (YYYY-MM-DD).</li>
+    <li><code>endDate</code> (optional): End date for the report (YYYY-MM-DD).</li>
+  </ul>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
+[
+  {
+    "_id": "2024-01-15",
+    "total": 100
+  },
+  {
+    "_id": "2024-01-20",
+    "total": 50
+  }
+]
+    </code>
+  </pre>
+
+  <h3>GET /api/reports/income-by-date</h3>
+  <p>Retrieves income grouped by date for the authenticated user. Requires a valid JWT token.</p>
+  <p><strong>Headers:</strong></p>
+  <pre>
+    <code>
+Authorization: Bearer JWT_TOKEN
+    </code>
+  </pre>
+  <p><strong>Query Parameters:</strong></p>
+  <ul>
+    <li><code>startDate</code> (optional): Start date for the report (YYYY-MM-DD).</li>
+    <li><code>endDate</code> (optional): End date for the report (YYYY-MM-DD).</li>
+  </ul>
+  <p><strong>Response:</strong></p>
+  <pre>
+    <code>
+[
+  {
+    "_id": "2024-02-10",
+    "total": 2000
+  },
+  {
+    "_id": "2024-02-25",
+    "total": 1500
+  }
+]
+    </code>
+  </pre>
+
+  <p>This documentation provides a general overview of the API endpoints. For more specific details, please consult the API source code.</p>
 
 </body>
 </html>
