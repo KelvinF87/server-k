@@ -99,52 +99,83 @@ reportRouter.get("/expenses", isAuthenticated, async (req, res) => {
 
   reportRouter.get("/alldata", isAuthenticated, async (req, res) => {
     try {
-      const userId = req.payload._id;
-  
-      const totalIngresos = await Ingreso.aggregate([
-        { $match: { user: new mongoose.Types.ObjectId(userId) } },
-        { $group: { _id: null, total: { $sum: "$ingreso" } } },
-      ]);
-  
-      const totalGastos = await Gasto.aggregate([
-        { $match: { user: new mongoose.Types.ObjectId(userId) } },
-        { $group: { _id: null, total: { $sum: "$gasto" } } },
-      ]);
-  
-      const balance = (totalIngresos[0]?.total || 0) - (totalGastos[0]?.total || 0);
-  
-      const expensesByDate = await Gasto.aggregate([
-        { $match: { user: new mongoose.Types.ObjectId(userId) } },
-        {
-          $group: {
-            _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-            total: { $sum: "$gasto" },
-          },
-        },
-        { $sort: { _id: 1 } },
-      ]);
-  
-      const incomeByDate = await Ingreso.aggregate([
-        { $match: { user: new mongoose.Types.ObjectId(userId) } },
-        {
-          $group: {
-            _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-            total: { $sum: "$ingreso" },
-          },
-        },
-        { $sort: { _id: 1 } },
-      ]);
-  
-      res.status(200).json({
-        balance: balance,
-        expenses: expensesByDate,
-        incomes: incomeByDate,
-      });
+        const userId = req.payload._id;
+        const { startDate, endDate } = req.query;  // Obtén startDate y endDate de los query params
+
+        // Validar que startDate y endDate tengan valores
+        if (!startDate || !endDate) {
+            return res.status(400).json({ message: "startDate and endDate are required" });
+        }
+
+        // Convertir startDate y endDate a objetos Date
+        const startDateObj = new Date(startDate);
+        const endDateObj = new Date(endDate);
+
+        // Validar que las fechas sean válidas
+        if (isNaN(startDateObj.getTime()) || isNaN(endDateObj.getTime())) {
+            return res.status(400).json({ message: "Invalid date format" });
+        }
+
+        const totalIngresos = await Ingreso.aggregate([
+            { $match: {
+                user: new mongoose.Types.ObjectId(userId),
+            }},
+            { $group: { _id: null, total: { $sum: "$ingreso" } } }
+        ]);
+
+        const totalGastos = await Gasto.aggregate([
+            { $match: {
+                user: new mongoose.Types.ObjectId(userId),
+            }},
+            { $group: { _id: null, total: { $sum: "$gasto" } } }
+        ]);
+
+        const balance = (totalIngresos[0]?.total || 0) - (totalGastos[0]?.total || 0);
+
+        const expensesByDate = await Gasto.aggregate([
+            { $match: {
+                user: new mongoose.Types.ObjectId(userId),
+                createdAt: {   // Filtra por fecha
+                    $gte: startDateObj,
+                    $lte: endDateObj
+                }
+            }},
+            {
+                $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                    total: { $sum: "$gasto" },
+                },
+            },
+            { $sort: { _id: 1 } },
+        ]);
+
+        const incomeByDate = await Ingreso.aggregate([
+            { $match: {
+                user: new mongoose.Types.ObjectId(userId),
+                createdAt: {   // Filtra por fecha
+                    $gte: startDateObj,
+                    $lte: endDateObj
+                }
+            }},
+            {
+                $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                    total: { $sum: "$ingreso" },
+                },
+            },
+            { $sort: { _id: 1 } },
+        ]);
+
+        res.status(200).json({
+            balance: balance,
+            expenses: expensesByDate,
+            incomes: incomeByDate,
+        });
     } catch (error) {
-      console.error("Error in /alldata route:", error.stack);
-      res.status(500).json({ message: "Error fetching data", error: error.message });
+        console.error("Error in /alldata route:", error.stack);
+        res.status(500).json({ message: "Error fetching data", error: error.message });
     }
-  });
+});
   
   
   module.exports = reportRouter;
