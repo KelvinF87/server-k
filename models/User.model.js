@@ -10,7 +10,7 @@ const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
   roles: { type: [String], default: ["user"], required: true },
   active: { type: Boolean, default: true },
-  image: { type: String, default: "https://static-00.iconduck.com/assets.00/avatar-icon-512x512-gu21ei4u.png" },
+  image: { type: String, default: "https://cdn-icons-png.flaticon.com/512/6676/6676023.png" },
 }, { timestamps: true });  // Add timestamps
 
 const User = mongoose.model("User", UserSchema);

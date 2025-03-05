@@ -3,7 +3,7 @@
 const express = require("express");
 const User = require("../models/User.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware");
-const { handleGetOne } = require("../utils/crud"); // Only need handleGetOne
+const { handleGetOne,handleUpdate } = require("../utils/crud"); // Only need handleGetOne
 
 const userRouter = express.Router();
 
