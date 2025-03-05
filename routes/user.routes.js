@@ -9,4 +9,6 @@ const userRouter = express.Router();
 
 userRouter.get('/:id', isAuthenticated, (req, res) => handleGetOne(User, req, res));
 
+userRouter.put('/:id', isAuthenticated, (req, res) => handleUpdate(User, req, res));
+
 module.exports = userRouter;
