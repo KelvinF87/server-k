@@ -31,6 +31,24 @@ const handleGetAll = (Model, req, res, populateOptions = '') => {
     });
 };
 
+const handleGetAllUserAdmin = (Model, req, res, populateOptions = '') => {
+  const isUser = req.payload.roles.includes("user") || req.payload.roles.includes("admin");
+
+  const query = isUser ? Model.find() : Model.find({ user: req.payload._id });
+
+  if (populateOptions) {
+    query.populate(populateOptions);
+  }
+
+  query.then(items => {
+      res.status(200).json(items);
+    })
+    .catch(err => {
+      console.error(`Error retrieving ${Model.modelName}s:`, err);
+      res.status(500).json({ message: `Error retrieving ${Model.modelName}s`, error: err.message });
+    });
+};
+
 const handleGetOne = (Model, req, res, populateOptions = '') => {
   Model.findById(req.params.id)
     .populate(populateOptions)
