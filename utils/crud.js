@@ -107,4 +107,4 @@ const handleDelete = (Model, req, res) => {
     });
 };
 
-module.exports = { handleCreate, handleGetAll, handleGetOne, handleUpdate, handleDelete };
+module.exports = { handleCreate, handleGetAll, handleGetOne, handleUpdate, handleDelete,handleGetAllUserAdmin };
