@@ -16,7 +16,7 @@ const handleCreate = (Model, req, res) => {
 };
 
 const handleGetAll = (Model, req, res, populateOptions = '') => {
-    const isAdmin = req.payload.roles.includes("admin");
+    const isAdmin = req.payload.roles.includes("admin")|| req.payload.roles.includes("user");
 
     const query = isAdmin ? Model.find() : Model.find({ user: req.payload._id });
 
