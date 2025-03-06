@@ -2,3 +2,5 @@ TOKEN_SECRET=kjf29dc271d886c6bbb86618002f70832650d9ce4cd2546a5a7fa70cde3ffa4d187
 PORT=5006
 MONGO_URI=mongodb+srv://docente:jlX2d5PTCe93OWbB@dbpower.oufxs.mongodb.net/dbfinan
 CORS_URI=http://localhost:5173,http://localhost:3000,https://finank.netlify.app
+BREVO_API_KEY=kxkeysib-8a28e1c14bce6ea564d31b983dd0d7aa4088806bc322e70d19ce6119990aeb73-NTbeU8S3EeJUM9oTj
+PS=j-k
