@@ -49,7 +49,7 @@ authRouter.post('/login', async (req, res) => {  // Use async/await
     const passwordCorrect = await bcrypt.compare(password, foundUser.password);
 
     if (passwordCorrect) {
-      const payload = { _id: foundUser._id, username: foundUser.username, lastname: foundUser.lastname,email: foundUser.email, name: foundUser.name, roles: foundUser.roles, image: foundUser.image }; // Include roles in payload
+      const payload = { _id: foundUser._id, username: foundUser.username, lastname: foundUser.lastname,email: foundUser.email, name: foundUser.name, roles: foundUser.roles, image: foundUser.image, active: foundUser.active }; // Include roles in payload
       const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, { algorithm: 'HS256', expiresIn: "6h" });
       res.status(200).json({ authToken });
     } else {
