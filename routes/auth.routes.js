@@ -28,7 +28,7 @@ authRouter.post("/signup", async (req, res) => { // Use async/await
     if (err.code === 11000) { // MongoDB duplicate key error
       return res.status(400).json({ message: "Username or email already exists" });
     }
-    res.status(500).json({ message: "Error while creating the user" });
+    res.status(500).json({ message: "Error while creating the user", error: err.message });
   }
 });
 
@@ -49,15 +49,15 @@ authRouter.post('/login', async (req, res) => {  // Use async/await
     const passwordCorrect = await bcrypt.compare(password, foundUser.password);
 
     if (passwordCorrect) {
-      const payload = { _id: foundUser._id, username: foundUser.username, lastname: foundUser.lastname,email: foundUser.email, name: foundUser.name, roles: foundUser.roles }; // Include roles in payload
+      const payload = { _id: foundUser._id, username: foundUser.username, lastname: foundUser.lastname,email: foundUser.email, name: foundUser.name, roles: foundUser.roles, image: foundUser.image }; // Include roles in payload
       const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, { algorithm: 'HS256', expiresIn: "6h" });
       res.status(200).json({ authToken });
     } else {
-      res.status(401).json({ message: "Unable to authenticate the user" });
+      res.status(401).json({ message: "Incorrect password" });
     }
   } catch (err) {
     console.error("Login Error:", err);  // Log the error
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Error authenticating user", error: err.message });
   }
 });
 
