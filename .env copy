@@ -4,3 +4,4 @@ MONGO_URI=mongodb+srv://docente:jlX2d5PTCe93OWbB@dbpower.oufxs.mongodb.net/dbfin
 CORS_URI=http://localhost:5173,http://localhost:3000,https://finank.netlify.app
 BREVO_API_KEY=kxkeysib-8a28e1c14bce6ea564d31b983dd0d7aa4088806bc322e70d19ce6119990aeb73-NTbeU8S3EeJUM9oTj
 PS=j-k
+EMAIL=docentekj@gmail.com

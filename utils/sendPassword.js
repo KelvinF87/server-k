@@ -9,7 +9,8 @@ const sendNewPasswordEmail = async (email, newPassword) => {
     // 3. Configure the API key
     const apiKey = defaultClient.authentications['api-key'];
     apiKey.apiKey = process.env.BREVO_API_KEY;  // Use environment variable for API key!
-  
+    const CORREO = process.env.EMAIL; 
+
     // 4. Create an instance of the Transactional Emails API
     const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
   
@@ -18,7 +19,7 @@ const sendNewPasswordEmail = async (email, newPassword) => {
   
     // 6. Configure the email details
     sendSmtpEmail.subject = "Su nueva contraseña";
-    sendSmtpEmail.sender = { "name": "FinanK", "email": "docentekj@gmail.com" }; // Replace with your app's name and email
+    sendSmtpEmail.sender = { "name": "FinanK", "email": CORREO}; // Replace with your app's name and email
     sendSmtpEmail.to = [{ "email": email }]; // Recipient email
     sendSmtpEmail.htmlContent = `<html><body><p>Su Nueva contraseña es: <strong>${newPassword}</strong></p>
                                       <p>Por favor, cambiela después de iniciar sesión.</p></body></html>`; // Email content
