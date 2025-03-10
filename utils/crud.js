@@ -153,7 +153,50 @@ const handleResetPassword = async (req, res) => {
         res.status(500).json({ message: "Error resetting password", error: error.message });
     }
 };
-
+const handleResetPasswordEmail = async (req, res) => {
+    console.log("handleResetPassword called!");
+    const userEmail = req.params.email; // Cambié 'useMail' a 'userEmail' para mayor claridad
+    console.log("UserEmail:", userEmail);
+    
+    try {
+        // 1. Generar una nueva contraseña aleatoria
+        const newPassword = Math.random().toString(36).slice(-8); // Ejemplo
+        console.log("newPassword:", newPassword);
+        
+        // 2. Hashear la nueva contraseña
+        const salt = await bcrypt.genSalt(10);
+        console.log("salt:", salt);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        console.log("hashedPassword:", hashedPassword);
+        
+        // 3. Buscar al usuario y actualizar la contraseña
+        const updatedUser = await User.findOneAndUpdate(
+            { email: userEmail }, // Cambié para que busque por email
+            { password: hashedPassword },
+            { new: true, runValidators: true }
+        );
+        console.log("updatedUser:", updatedUser); // Log lo que se recibe
+        
+        if (!updatedUser) {
+            console.log("User not found!");
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+        
+        // 4. Enviar un correo electrónico al usuario (reemplazar con tu lógica de correo)
+        try {
+            await sendNewPasswordEmail(updatedUser.email, newPassword); // Esperar el envío del correo
+        } catch (emailError) {
+            console.error("Error al enviar el correo:", emailError);
+            return res.status(500).json({ message: "Contraseña restablecida, pero falló el envío del correo.", error: emailError.message });
+        }
+        
+        // 5. Responder al cliente
+        res.status(200).json({ message: "Contraseña restablecida con éxito. Correo enviado al usuario." });
+    } catch (error) {
+        console.error("Error al restablecer la contraseña:", error);
+        res.status(500).json({ message: "Error al restablecer la contraseña", error: error.message });
+    }
+};
 const handleDelete = (Model, req, res) => {
     Model.findById(req.params.id)
         .then(item => {
@@ -174,4 +217,4 @@ const handleDelete = (Model, req, res) => {
         });
 };
 
-module.exports = { handleCreate, handleGetAll, handleGetOne, handleUpdate, handleDelete, handleGetAllUserAdmin, handleResetPassword };
+module.exports = { handleCreate, handleGetAll, handleGetOne, handleUpdate, handleDelete, handleGetAllUserAdmin, handleResetPassword, handleResetPasswordEmail};
